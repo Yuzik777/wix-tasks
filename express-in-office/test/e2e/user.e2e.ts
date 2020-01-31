@@ -12,7 +12,7 @@ describe("Users API", () => {
             name: 'Test User',
             age: 18
         });
-
+        
         expect(result.body.id).toMatch(regex.v4);
         expect(result.body.name).toEqual('Test User');
         expect(result.body.age).toEqual(18);
