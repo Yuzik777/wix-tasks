@@ -7,8 +7,6 @@ const app = express();
 const stockApi = new StockCachedApi(new StockApi(API_KEY), {maxAge:1000 * 30});
 //const stockApi = new StockApi(API_KEY, {maxAge:1000 * 30});
 
-
-
 app.get('/api/v1/prices', async (req: Request, res: Response, next: NextFunction) => {
     const company: string = req.query.company;
     try{

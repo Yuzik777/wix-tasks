@@ -1,6 +1,5 @@
 import {CompanyDescription, IStockApi} from 'typings/stockApi.types';
 import StockApi from './stockApi';
-import lru from 'lru-cache';
 import LRUCache from 'lru-cache';
 
 class StockCachedApi implements IStockApi{
@@ -9,7 +8,7 @@ class StockCachedApi implements IStockApi{
 
   constructor(stockApi: IStockApi, options?:LRUCache.Options<string, CompanyDescription>){
     this.stockApi = stockApi;
-    this.cache = new lru(options || {});
+    this.cache = new LRUCache(options || {});
   }
 
   async getFullCompanyDescription(company: string): Promise<CompanyDescription> {
