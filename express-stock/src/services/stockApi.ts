@@ -1,13 +1,9 @@
 import axios from 'axios';
 import _ from 'lodash';
+import {CompanyDescription, IStockApi} from 'typings/stockApi.types'
 
-export type CompanyDescription = {
-    symbol: string,
-    companyName: string,
-    price?: number
-};
 
-class StockApi{
+class StockApi implements IStockApi{
     private API_KEY: string;
 
     constructor(apiKey: string){
@@ -42,7 +38,7 @@ class StockApi{
 
     async getFullCompanyDescription(company: string): Promise<CompanyDescription>{
         let companyDescription: CompanyDescription;
-        if(company){
+        if(company && (typeof company === 'string')){
             companyDescription = await this.getCompanyDescription(company);
             companyDescription.price = await this.getStockPriceBySymbol(companyDescription.symbol);
             return companyDescription;
