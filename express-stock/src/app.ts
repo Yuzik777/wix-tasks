@@ -1,6 +1,7 @@
 import express, {Request, Response, NextFunction} from 'express';
 import StockCachedApi from './services/stockCachedApi'
 import StockApi from './services/stockApi'
+import {STOCK_API_ERROR_CODES} from './typings/stockApi.types'
 
 const API_KEY = 'DQJF4Q4LS99UCXC1';
 const app = express();
@@ -13,7 +14,8 @@ app.get('/api/v1/prices', async (req: Request, res: Response, next: NextFunction
         const companyDescription = await stockApi.getFullCompanyDescription(company);
         res.json(companyDescription);
     } catch(err) {
-        res.status(422).send(err.message); 
+        const status = STOCK_API_ERROR_CODES[err.message]||500;
+        res.status(status).send(err.message);
     }
 });
 

@@ -1,4 +1,5 @@
 import StockApi from '../../src/services/stockApi'
+import {STOCK_API_ERROR_MESSAGES} from '../../src/typings/stockApi.types'
 import nock from 'nock';
 
 const API_KEY = 'DQJF4Q4LS99UCXC1';
@@ -69,7 +70,7 @@ describe("Stock API tests", () => {
     try {
       await stockApi.getCompanyDescription(company);
     } catch(err) {
-      expect(err.message).toBe('Company not found');
+      expect(err.message).toBe(STOCK_API_ERROR_MESSAGES.companyNotFound);
     }
   });
 
@@ -103,7 +104,7 @@ describe("Stock API tests", () => {
     try {
       await stockApi.getStockPriceBySymbol(company);
     } catch(err) {
-      expect(err.message).toBe('Price not found');
+      expect(err.message).toBe(STOCK_API_ERROR_MESSAGES.priceNotFound);
     }
   });
 

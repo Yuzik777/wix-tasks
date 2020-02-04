@@ -1,6 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
-import {CompanyDescription, IStockApi} from 'typings/stockApi.types'
+import {CompanyDescription, IStockApi, STOCK_API_ERROR_MESSAGES} from '../typings/stockApi.types'
 
 
 class StockApi implements IStockApi{
@@ -21,7 +21,7 @@ class StockApi implements IStockApi{
             if(symbol && companyName)
                 return {symbol, companyName};
         }
-        throw(new Error('Company not found'));
+        throw(new Error(STOCK_API_ERROR_MESSAGES.companyNotFound));
     }
 
     async getStockPriceBySymbol(symbol: string): Promise<number>{
@@ -33,7 +33,7 @@ class StockApi implements IStockApi{
         if(price)
             return price;
 
-        throw(new Error('Price not found'));
+        throw(new Error(STOCK_API_ERROR_MESSAGES.priceNotFound));
     }
 
     async getFullCompanyDescription(company: string): Promise<CompanyDescription>{
@@ -43,7 +43,7 @@ class StockApi implements IStockApi{
             companyDescription.price = await this.getStockPriceBySymbol(companyDescription.symbol);
             return companyDescription;
         }
-        throw new Error("Wrong company name format");
+        throw new Error(STOCK_API_ERROR_MESSAGES.invalidCompanyName);
     }
 
 }
