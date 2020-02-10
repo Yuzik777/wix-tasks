@@ -1,0 +1,176 @@
+button {
+  background: none;
+  border: 0;
+  color: inherit;
+  /* cursor: default; */
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+  -webkit-appearance: button; /* for input */
+  -webkit-user-select: none; /* for button */
+     -moz-user-select: none;
+      -ms-user-select: none;
+}
+
+html {
+	--main-green-color: #41bf15;
+	--main-red-color: #ff4f46;
+	--main-text-color: #59737c;
+	--white-color: #ffffff;
+  --icons-color: #ababab;
+  --divider-color: #e5e5e5;
+  --bold-font: "HelveticaNeueW01-75Bold", sans-serif;
+  --main-font: "HelveticaNeueW01-55Roma", sans-serif;
+  --logo-font: "HelveticaNeueW02-95Blac", sans-serif;
+  --avenir-font: "HelveticaNeueW01-55Roma", sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.filtersForm {
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+}
+
+.filtersContainer {
+  flex-grow:1;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  font-family: var(--main-font);
+  color: var(--main-text-color);
+  font-size: 26px;
+  flex-basis: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterLabel input, .filterLabel select{
+  margin:0;
+  width:333px;
+  height: 55px;
+}
+
+.toolbarList {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+}
+
+.toolbarListItem + .toolbarListItem {
+  margin-left: 25px;
+}
+
+.action-button:focus,
+.action-button:hover  {
+  outline: none;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.action-button.active svg path{
+  stroke: var(--main-green-color);
+}
+
+.companiesList{
+  display: flex;
+  flex-direction: column;
+  padding-left: 30px;
+  padding-right: 30px;
+  list-style-type: none;
+}
+
+.companyContainer{
+  height: 115px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.companyInfoContainer{
+
+}
+
+
+input:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, .5);
+}
+
+.applyBtn {
+  min-width: 120px; /*  Какая-то хуйня с шириной */
+  height: 120px;
+  border-radius: 50%;
+  background-color: var(--main-green-color);
+  font-family: var(--bold-font);
+  font-size: 30px;
+  color: var(--white-color);
+}
+
+.applyBtn:hover{
+  opacity: 0.8;
+}
+
+.logo {
+
+}
+
+.logoLink {
+  font-family: var(--bold-font);
+  color: var(--main-green-color);
+  font-size: 39px;
+  background-color: var(--white-color);
+  text-decoration: none;
+}
+
+.companyName {
+  font-family: var(--avenir-font);
+  font-size: 33px;
+  font-weight: 300;
+  color: var(--main-text-color);
+}
+
+.stockPrice {
+  margin-right: 30px;
+  font-family: var(--main-font);
+  font-size: 30px;
+  color: var(--main-text-color);
+}
+
+.stockGain {
+  width: 150px;
+  height: 56px;
+  border-radius: 10px;
+  font-family: var(--avenir-font);
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--white-color);
+  background-color: var(--main-green-color);
+}
+
+.stockGain:hover {
+  opacity: 0.8;
+}
+
+.stockGain.negative {
+  background-color: var(--main-red-color);
+}
+
+

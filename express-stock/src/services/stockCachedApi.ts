@@ -2,7 +2,7 @@ import {CompanyDescription, IStockApi} from 'typings/stockApi.types';
 import StockApi from './stockApi';
 import LRUCache from 'lru-cache';
 
-class StockCachedApi implements IStockApi{
+class StockCachedApi{
   private stockApi: IStockApi;
   private cache: LRUCache<string, CompanyDescription>;
 
@@ -18,6 +18,11 @@ class StockCachedApi implements IStockApi{
       this.cache.set(company, description);
     }
     return description;
+  }
+
+  async getFullCompaniesDescriptions(companies: string[]): Promise<(CompanyDescription|string)[]>{
+    return Promise.all(companies.map( (company) => this.getFullCompanyDescription(company)
+    .catch(err => {return company + ' ' + err.message}).then(value => {return value})));
   }
 
 }

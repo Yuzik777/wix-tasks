@@ -1,18 +1,18 @@
 import axios from 'axios';
 import _ from 'lodash';
-import {CompanyDescription, IStockApi, STOCK_API_ERROR_MESSAGES} from '../typings/stockApi.types'
+import {CompanyDescription, IStockApi, STOCK_API_ERROR_MESSAGES, CompanyStats} from '../typings/stockApi.types'
 
 
-class StockApi implements IStockApi{
-    private API_KEY: string;
+class StockApi implements IStockApi {
+    getApiKey: () => string;
 
-    constructor(apiKey: string){
-        this.API_KEY = apiKey;
+    constructor(getApiKey: () => string){
+        this.getApiKey = getApiKey;
     }
 
     async getCompanyDescription(company: string): Promise<CompanyDescription>{
-        const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${company}&apikey=${this.API_KEY}`;
-        
+        const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${company}&apikey=${this.getApiKey()}`;
+
         const response = await axios.get(url, {responseType: 'json'});
         const data = response.data;
         if(data.bestMatches && data.bestMatches.length >= 0){
@@ -24,23 +24,32 @@ class StockApi implements IStockApi{
         throw(new Error(STOCK_API_ERROR_MESSAGES.companyNotFound));
     }
 
-    async getStockPriceBySymbol(symbol: string): Promise<number>{
-        const url: string = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${this.API_KEY}`;
-        
+    async getStockStatsBySymbol(symbol: string): Promise<CompanyStats>{
+        const url: string = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${this.getApiKey()}`;
+
         const response = await axios.get(url, {responseType: 'json'});
         const data = response.data;
         const price = _.get(data, '["Global Quote"]["05. price"]');
-        if(price)
-            return price;
+        const change = _.get(data, '["Global Quote"]["09. change"]');
+        const changePercent = _.get(data, '["Global Quote"]["10. change percent"]');
+
+        if(price || change || changePercent)
+        {
+            return {
+                price: parseFloat(price),
+                change: parseFloat(change),
+                changePercent: parseFloat(changePercent)
+            };
+        }
 
         throw(new Error(STOCK_API_ERROR_MESSAGES.priceNotFound));
     }
 
     async getFullCompanyDescription(company: string): Promise<CompanyDescription>{
-        let companyDescription: CompanyDescription;
         if(company && (typeof company === 'string')){
-            companyDescription = await this.getCompanyDescription(company);
-            companyDescription.price = await this.getStockPriceBySymbol(companyDescription.symbol);
+            const companyDescription = await this.getCompanyDescription(company);
+            const companyStats = await this.getStockStatsBySymbol(companyDescription.symbol);
+            Object.assign(companyDescription, companyStats);
             return companyDescription;
         }
         throw new Error(STOCK_API_ERROR_MESSAGES.invalidCompanyName);

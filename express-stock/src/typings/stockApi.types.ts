@@ -1,8 +1,16 @@
 export type CompanyDescription = {
   symbol: string,
   companyName: string,
-  price?: number
+  price?: number,
+  change?: number,
+  changePercent?: number
 };
+
+export type CompanyStats = {
+  price: number,
+  change: number,
+  changePercent: number
+}
 
 export interface IStockApi {
   getFullCompanyDescription(company: string): Promise<CompanyDescription>;
@@ -20,3 +28,5 @@ export const STOCK_API_ERROR_CODES = {
   [STOCK_API_ERROR_MESSAGES.priceNotFound]: 404,
   [STOCK_API_ERROR_MESSAGES.invalidCompanyName]: 422
 }
+
+
