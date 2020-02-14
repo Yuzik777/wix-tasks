@@ -49,8 +49,8 @@ class StockApi implements IStockApi {
         if(company && (typeof company === 'string')){
             const companyDescription = await this.getCompanyDescription(company);
             const companyStats = await this.getStockStatsBySymbol(companyDescription.symbol);
-            Object.assign(companyDescription, companyStats);
-            return companyDescription;
+            const fullCompanyDescription = {...companyDescription, ...companyStats};
+            return fullCompanyDescription;
         }
         throw new Error(STOCK_API_ERROR_MESSAGES.invalidCompanyName);
     }

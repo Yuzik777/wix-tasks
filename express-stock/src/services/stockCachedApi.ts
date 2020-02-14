@@ -1,5 +1,4 @@
 import {CompanyDescription, IStockApi} from 'typings/stockApi.types';
-import StockApi from './stockApi';
 import LRUCache from 'lru-cache';
 
 class StockCachedApi{

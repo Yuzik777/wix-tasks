@@ -69,7 +69,7 @@ const addCompaniesToList = ( companies ) => {
 };
 
 async function loadStocks(companies){
-  const url = 'http://127.0.0.1:3000/api/v1/prices?company=' + companies.join(',');
+  const url = 'http://localhost:3000/api/v1/prices?company=' + companies.join(',');
   const response = await fetch(url);
   if(response.ok){
     const stockData = await response.json();
