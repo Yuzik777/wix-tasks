@@ -1,6 +1,11 @@
 import { CompanyDescription, IStockApi } from "typings/stockApi.types";
 import LRUCache from "lru-cache";
 
+type CompanyError = {
+  symbol: string;
+  error: string;
+};
+
 class StockCachedApi {
   private stockApi: IStockApi;
   private cache: LRUCache<string, CompanyDescription>;
@@ -26,7 +31,7 @@ class StockCachedApi {
 
   async getFullCompaniesDescriptions(
     companies: string[]
-  ): Promise<(CompanyDescription | string)[]> {
+  ): Promise<(CompanyDescription | CompanyError)[]> {
     return Promise.all(
       companies.map(company =>
         this.getFullCompanyDescription(company)
@@ -34,7 +39,7 @@ class StockCachedApi {
             return value;
           })
           .catch(err => {
-            return company + " " + err.message;
+            return { symbol: company, error: err.message };
           })
       )
     );

@@ -7,6 +7,18 @@ import {
   CompanyStats
 } from "../typings/stockApi.types";
 
+function getRandomIp() {
+  return (
+    Math.floor(Math.random() * 255).toString() +
+    "." +
+    Math.floor(Math.random() * 255).toString() +
+    "." +
+    Math.floor(Math.random() * 255).toString() +
+    "." +
+    Math.floor(Math.random() * 255).toString()
+  );
+}
+
 class StockApi implements IStockApi {
   getApiKey: () => string;
 
@@ -17,7 +29,10 @@ class StockApi implements IStockApi {
   async getCompanyDescription(company: string): Promise<CompanyDescription> {
     const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${company}&apikey=${this.getApiKey()}`;
 
-    const response = await axios.get(url, { responseType: "json" });
+    const response = await axios.get(url, {
+      responseType: "json",
+      headers: { "X-Forwarded-For": getRandomIp() }
+    });
     const data = response.data;
     if (data.bestMatches && data.bestMatches.length >= 0) {
       const symbol = _.get(data, "bestMatches[0]['1. symbol']");
@@ -30,7 +45,10 @@ class StockApi implements IStockApi {
   async getStockStatsBySymbol(symbol: string): Promise<CompanyStats> {
     const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${this.getApiKey()}`;
 
-    const response = await axios.get(url, { responseType: "json" });
+    const response = await axios.get(url, {
+      responseType: "json",
+      headers: { "X-Forwarded-For": getRandomIp() }
+    });
     const data = response.data;
     const price = _.get(data, '["Global Quote"]["05. price"]');
     const change = _.get(data, '["Global Quote"]["09. change"]');
